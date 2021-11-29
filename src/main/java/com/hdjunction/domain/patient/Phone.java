@@ -1,9 +1,41 @@
 package com.hdjunction.domain.patient;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.regex.Pattern;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Phone {
 
+    private static final Pattern pattern = Pattern.compile("^01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}$");
+
+    @Column
     private String phone;
+
+    public Phone(String phone) {
+        this.phone = phone;
+    }
+
+    public static Phone from(String phone) {
+        validation(phone);
+        return new Phone(parsePhoneNumber(phone));
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    private static String parsePhoneNumber(String phone) {
+        return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
+    }
+
+    private static void validation(String phone) {
+        if (!pattern.matcher(phone).find()) {
+            throw new IllegalArgumentException("올바르지 않은 전화번호입니다. ex) 01012341234");
+        }
+    }
 }

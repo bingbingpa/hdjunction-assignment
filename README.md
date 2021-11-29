@@ -22,7 +22,7 @@
   - (옵션)API 구현중 추가로 필요한 칼럼이 있다면 자유롭게 추가
     - created_date, modified_date
   - (옵션) 코드, 코드그룹 Entity 구현
-- [ ] JpaRepository 를 상속 받아서 PatientRepository, VisitRepository 생성
+  - JpaRepository 를 상속 받아서 PatientRepository, VisitRepository 생성
 - [ ] API
   - 환자 등록
     - 환자등록번호는 **병원별로 중복되지 않도록 서버에서 생성**
@@ -39,6 +39,7 @@
 - [ ] validation
   - global Exception 처리
   - dto validation
+    - 전화 번호, 생일
 - [ ] response
   - 성별 코드명으로 보여주기
   - 날짜 yyyy-mm-dd 형태로 보여주기

@@ -8,12 +8,15 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Patient extends BaseTimeEntity {
+
+    private static final StringBuilder sb = new StringBuilder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,4 +48,11 @@ public class Patient extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Visit> visitHistory = new ArrayList<>();
+
+    public static String generateRegistrationNumber(String number) {
+        sb.setLength(0);
+        sb.append(LocalDate.now().getYear());
+        sb.append(String.format("%05d", Integer.parseInt(number)));
+        return sb.toString();
+    }
 }
