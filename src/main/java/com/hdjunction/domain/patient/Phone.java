@@ -17,19 +17,19 @@ public class Phone {
     private String phone;
 
     public Phone(String phone) {
+        validation(phone);
         this.phone = phone;
     }
 
     public static Phone from(String phone) {
-        validation(phone);
-        return new Phone(parsePhoneNumber(phone));
+        return new Phone(phone);
     }
 
     public String getPhone() {
-        return phone;
+        return parsePhoneNumber(phone);
     }
 
-    private static String parsePhoneNumber(String phone) {
+    private String parsePhoneNumber(String phone) {
         return phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7);
     }
 

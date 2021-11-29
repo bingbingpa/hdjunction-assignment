@@ -19,19 +19,19 @@ public class Birthday {
     private String birthDay;
 
     public Birthday(String birthDay) {
+        validation(birthDay);
         this.birthDay = birthDay;
     }
 
     public static Birthday from(String birthDay) {
-        validation(birthDay);
-        return new Birthday(parseBirthDay(birthDay));
+        return new Birthday(birthDay);
     }
 
     public String getBirthDay() {
-        return birthDay;
+        return parseBirthDay(birthDay);
     }
 
-    private static String parseBirthDay(String birthDay) {
+    private String parseBirthDay(String birthDay) {
         return LocalDate.parse(birthDay, DateTimeFormatter.ofPattern("yyyyMMdd")).toString();
     }
 
