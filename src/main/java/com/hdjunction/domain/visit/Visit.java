@@ -5,10 +5,12 @@ import com.hdjunction.domain.code.Code;
 import com.hdjunction.domain.hospital.Hospital;
 import com.hdjunction.domain.patient.Patient;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Visit extends BaseTimeEntity {

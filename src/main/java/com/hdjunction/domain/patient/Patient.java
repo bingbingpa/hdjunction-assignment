@@ -5,6 +5,8 @@ import com.hdjunction.domain.code.Code;
 import com.hdjunction.domain.hospital.Hospital;
 import com.hdjunction.domain.visit.Visit;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Patient extends BaseTimeEntity {
@@ -24,7 +27,7 @@ public class Patient extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
@@ -48,6 +51,14 @@ public class Patient extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Visit> visitHistory = new ArrayList<>();
+
+    @Builder
+    public Patient(Hospital hospital, String name, String registrationNo, Code gender) {
+        this.hospital = hospital;
+        this.name = name;
+        this.registrationNo = registrationNo;
+        this.gender = gender;
+    }
 
     public static String generateRegistrationNumber(String number) {
         sb.setLength(0);

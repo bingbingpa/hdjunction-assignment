@@ -2,10 +2,13 @@ package com.hdjunction.domain.hospital;
 
 import com.hdjunction.domain.baseentity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Hospital extends BaseTimeEntity {
@@ -23,4 +26,11 @@ public class Hospital extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String directorName;
+
+    @Builder
+    public Hospital(String name, String ykiho, String directorName) {
+        this.name = name;
+        this.ykiho = ykiho;
+        this.directorName = directorName;
+    }
 }
