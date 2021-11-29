@@ -18,7 +18,7 @@
 
 ### 요구사항 정리
 
-- [ ] Hospital(병원), Patient(환자), Visit(환자방문) Entity 정의
+- [X] Hospital(병원), Patient(환자), Visit(환자방문) Entity 정의
   - (옵션)API 구현중 추가로 필요한 칼럼이 있다면 자유롭게 추가
     - created_date, modified_date
   - (옵션) 코드, 코드그룹 Entity 구현
