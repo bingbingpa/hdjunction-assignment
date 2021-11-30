@@ -27,7 +27,7 @@ public class FakeData {
                                 Patient.builder()
                                         .registrationNo(String.valueOf(i))
                                         .name("test" + i)
-                                        .birthday(Birthday.from("20200101"))
+                                        .dateOfBirth(DateOfBirth.from("20200101"))
                                         .phone(Phone.from("01012345678"))
                                         .gender(Code.MALE)
                         )

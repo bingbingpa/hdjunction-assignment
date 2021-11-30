@@ -66,7 +66,7 @@ class PatientRepositoryTest {
     @Test
     @DisplayName("동적 검색 페이징 조회")
     void dynamic_search() {
-        Page<PatientPageResponse> search = patientRepository.search(PatientSearchType.BIRTHDAY, "20200101", PageRequest.of(1, 5));
+        Page<PatientPageResponse> search = patientRepository.search(PatientSearchType.DATE_OF_BIRTH, "20200101", PageRequest.of(1, 5));
 
         assertAll(
                 () -> assertThat(search.getContent().get(0).getId()).isEqualTo(patients.get(0).getId()),

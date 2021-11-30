@@ -42,6 +42,7 @@ ext {
 }
 
 test {
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
@@ -63,6 +64,7 @@ build {
     if(file(querydslDir).exists()) {
         delete(file(querydslDir))
     }
+    dependsOn copyDocument
 }
 
 // querydsl 추가 시작

@@ -86,9 +86,9 @@ class PatientServiceTest {
         Patient patient = patientRepository.findById(savedId).orElseThrow(NotFoundPatientException::new);
 
         assertAll(
-                () -> assertThat(patient.getBirthday()).isEqualTo("2020-10-10"),
+                () -> assertThat(patient.getDateOfBirth()).isEqualTo("2020-10-10"),
                 () -> assertThat(patient.getPhone()).isEqualTo("010-1234-5678"),
-                () -> assertThat(patient.getRegistrationNo()).isEqualTo(LocalDate.now().getYear() + "000" + patient.getId())
+                () -> assertThat(patient.getRegistrationNo()).isEqualTo(LocalDate.now().getYear() + String.format("%05d", savedId))
         );
     }
 
@@ -100,7 +100,7 @@ class PatientServiceTest {
         UpdatePatientRequest updateRequest = UpdatePatientRequest.builder()
                 .name("철수")
                 .gender("F")
-                .birthDay("19990101")
+                .dateOfBirth("19990101")
                 .phone("01099998888")
                 .build();
 
@@ -111,9 +111,9 @@ class PatientServiceTest {
         assertAll(
                 () -> assertThat(patient.getName()).isEqualTo("철수"),
                 () -> assertThat(patient.getGender()).isEqualTo("여"),
-                () -> assertThat(patient.getBirthday()).isEqualTo("1999-01-01"),
+                () -> assertThat(patient.getDateOfBirth()).isEqualTo("1999-01-01"),
                 () -> assertThat(patient.getPhone()).isEqualTo("010-9999-8888"),
-                () -> assertThat(patient.getRegistrationNo()).isEqualTo(LocalDate.now().getYear() + "000" + savedId)
+                () -> assertThat(patient.getRegistrationNo()).isEqualTo(LocalDate.now().getYear() + String.format("%05d", savedId))
         );
 
     }
@@ -133,7 +133,7 @@ class PatientServiceTest {
                 .hospitalId(hospital.getId())
                 .name("홍길동")
                 .gender(Code.MALE.getCode())
-                .birthDay("20201010")
+                .dateOfBirth("20201010")
                 .phone("01012345678")
                 .build();
     }

@@ -17,7 +17,7 @@ public class PatientResponse {
     private String name;
     private String registrationNo;
     private String gender;
-    private String birthDay;
+    private String dateOfBirth;
     private String phone;
     private List<VisitResponse> visits;
 
@@ -27,7 +27,7 @@ public class PatientResponse {
         this.name = patient.getName();
         this.registrationNo = patient.getRegistrationNo();
         this.gender = patient.getGender();
-        this.birthDay = patient.getBirthday();
+        this.dateOfBirth = patient.getDateOfBirth();
         this.phone = patient.getPhone();
         this.visits = patient.getVisits().stream()
                 .map(v -> new VisitResponse(v.getId(), v.getCreatedDate(), v.getVisitCode()))

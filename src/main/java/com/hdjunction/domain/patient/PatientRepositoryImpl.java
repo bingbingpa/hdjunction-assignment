@@ -38,7 +38,7 @@ public class PatientRepositoryImpl implements PatientRepositoryCustom {
                         patient.name,
                         patient.registrationNo,
                         patient.gender,
-                        patient.birthday,
+                        patient.dateOfBirth,
                         patient.phone,
                         visit.createdDate.max()
                 ))

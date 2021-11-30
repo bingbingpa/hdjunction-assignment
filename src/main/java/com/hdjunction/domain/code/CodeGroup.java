@@ -3,6 +3,7 @@ package com.hdjunction.domain.code;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.hdjunction.domain.code.Code.*;
 
@@ -21,5 +22,11 @@ public enum CodeGroup {
         this.codeGroup = codeGroup;
         this.name = name;
         this.codes = codes;
+    }
+
+    public String getCodeGroup() {
+        return codes.stream()
+                .map(f -> f.getCode() + ": " + f.getName())
+                .collect(Collectors.joining(", "));
     }
 }

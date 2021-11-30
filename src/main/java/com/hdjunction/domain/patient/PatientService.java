@@ -43,7 +43,7 @@ public class PatientService {
         patient.update(
                 dto.getName(),
                 Code.findByCode(dto.getGender()),
-                Birthday.from(dto.getBirthDay()),
+                DateOfBirth.from(dto.getDateOfBirth()),
                 Phone.from(dto.getPhone())
         );
     }

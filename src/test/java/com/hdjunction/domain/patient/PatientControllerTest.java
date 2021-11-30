@@ -4,19 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hdjunction.domain.code.Code;
 import com.hdjunction.domain.hospital.Hospital;
 import com.hdjunction.domain.hospital.HospitalRepository;
+import com.hdjunction.domain.patient.docs.PatientDocumentation;
 import com.hdjunction.domain.patient.dto.request.CreatePatientRequest;
 import com.hdjunction.domain.patient.dto.request.UpdatePatientRequest;
 import com.hdjunction.domain.visit.Visit;
 import com.hdjunction.domain.visit.VisitRepository;
+import com.hdjunction.global.mockmvc.BasControllerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -34,12 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 @SpringBootTest
-@AutoConfigureMockMvc
-class PatientControllerTest {
+class PatientControllerTest extends BasControllerTest {
 
     private final List<Patient> patients = new ArrayList<>();
-    @Autowired
-    private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -85,7 +82,9 @@ class PatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(("payload.name")).value(patient.getName()))
                 .andExpect(jsonPath(("payload.gender")).value(patient.getGender()))
-                .andExpect(jsonPath(("payload.birthDay")).value(patient.getBirthday()));
+                .andExpect(jsonPath(("payload.dateOfBirth")).value(patient.getDateOfBirth()))
+                .andDo(documentHandler.document(PatientDocumentation.pathParamPatientId()))
+                .andDo(documentHandler.document(PatientDocumentation.findPatientResponse()));
     }
 
     @Test
@@ -95,7 +94,7 @@ class PatientControllerTest {
 
         mockMvc.perform(get(API_PATIENTS_PATH)
                         .accept(MediaType.APPLICATION_JSON)
-                        .param("type", PatientSearchType.BIRTHDAY.toString())
+                        .param("type", PatientSearchType.DATE_OF_BIRTH.toString())
                         .param("value", "20200101")
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
@@ -104,7 +103,9 @@ class PatientControllerTest {
                 .andExpect(jsonPath(("payload.content")).exists())
                 .andExpect(jsonPath(("payload.pageable")).exists())
                 .andExpect(jsonPath(("payload.pageable.pageNumber")).value(page))
-                .andExpect(jsonPath(("payload.pageable.pageSize")).value(size));
+                .andExpect(jsonPath(("payload.pageable.pageSize")).value(size))
+                .andDo(documentHandler.document(PatientDocumentation.searchPatientRequest()))
+                .andDo(documentHandler.document(PatientDocumentation.searchPatientResponse()));
     }
 
     @Test
@@ -113,14 +114,15 @@ class PatientControllerTest {
                 .hospitalId(hospital.getId())
                 .name("테스트")
                 .gender("F")
-                .birthDay("20061001")
+                .dateOfBirth("20061001")
                 .phone("01099991234")
                 .build();
 
         mockMvc.perform(post(API_PATIENTS_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createPatientRequest)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(documentHandler.document(PatientDocumentation.createPatientRequest()));
     }
 
     @Test
@@ -129,21 +131,22 @@ class PatientControllerTest {
         UpdatePatientRequest updatePatientRequest = UpdatePatientRequest.builder()
                 .name("유저")
                 .gender("M")
-                .birthDay("19991010")
+                .dateOfBirth("19991010")
                 .phone("01099991234")
                 .build();
 
         mockMvc.perform(put(API_PATIENTS_PATH + "/{id}", patient.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatePatientRequest)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(documentHandler.document(PatientDocumentation.updatePatientRequest()));
 
         Patient saved = patientRepository.findById(patient.getId()).orElseThrow(NotFoundPatientException::new);
 
         assertAll(
                 () -> assertThat(saved.getName()).isEqualTo(updatePatientRequest.getName()),
                 () -> assertThat(saved.getGender()).isEqualTo(Code.MALE.getName()),
-                () -> assertThat(saved.getBirthday()).isEqualTo("1999-10-10")
+                () -> assertThat(saved.getDateOfBirth()).isEqualTo("1999-10-10")
         );
     }
 
@@ -152,7 +155,8 @@ class PatientControllerTest {
         Long id = patients.get(0).getId();
 
         mockMvc.perform(delete(API_PATIENTS_PATH + "/{id}", id))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(documentHandler.document(PatientDocumentation.pathParamPatientId()));
 
         assertThatThrownBy(() -> patientService.findById(id))
                 .isInstanceOf(NotFoundPatientException.class);
@@ -180,7 +184,7 @@ class PatientControllerTest {
                 .hospitalId(hospital.getId())
                 .name("테스트")
                 .gender("F")
-                .birthDay("122223004049fjvn")
+                .dateOfBirth("122223004049fjvn")
                 .phone("01099991234")
                 .build();
 

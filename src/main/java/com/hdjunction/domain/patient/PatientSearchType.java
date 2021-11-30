@@ -15,7 +15,7 @@ public enum PatientSearchType {
 
     NAME(patient.name::eq),
     REGISTRATION_NO(patient.registrationNo::eq),
-    BIRTHDAY(str-> patient.birthday.eq(Birthday.from(str)));
+    DATE_OF_BIRTH(str-> patient.dateOfBirth.eq(DateOfBirth.from(str)));
 
     private Function<String, BooleanExpression> expression;
 

@@ -42,18 +42,18 @@ public class Patient extends BaseTimeEntity {
     private Code gender;
 
     @Embedded
-    private Birthday birthday;
+    private DateOfBirth dateOfBirth;
 
     @Embedded
     private Phone phone;
 
     @Builder
-    public Patient(Hospital hospital, String name, String registrationNo, Code gender, Birthday birthday, Phone phone) {
+    public Patient(Hospital hospital, String name, String registrationNo, Code gender, DateOfBirth dateOfBirth, Phone phone) {
         this.hospital = hospital;
         this.name = name;
         this.registrationNo = registrationNo;
         this.gender = gender;
-        this.birthday = birthday;
+        this.dateOfBirth = dateOfBirth;
         this.phone = phone;
     }
 
@@ -64,10 +64,10 @@ public class Patient extends BaseTimeEntity {
         this.registrationNo = sb.toString();
     }
 
-    public void update(String name, Code gender, Birthday birthday, Phone phone) {
+    public void update(String name, Code gender, DateOfBirth dateOfBirth, Phone phone) {
         this.name = name;
         this.gender = gender;
-        this.birthday = birthday;
+        this.dateOfBirth = dateOfBirth;
         this.phone = phone;
     }
 
@@ -95,8 +95,8 @@ public class Patient extends BaseTimeEntity {
         return gender.getName();
     }
 
-    public String getBirthday() {
-        return birthday.getBirthDay();
+    public String getDateOfBirth() {
+        return dateOfBirth.getDateOfBirth();
     }
 
     public String getPhone() {
