@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @SpringBootTest
 class PatientServiceTest {
 
+    private static final int VISITS_SIZE = 5;
+
     @Autowired
     private PatientService patientService;
     @Autowired
@@ -41,7 +43,6 @@ class PatientServiceTest {
 
     private Hospital hospital;
     private final List<Patient> patients = new ArrayList<>();
-    private final List<Visit> visits = new ArrayList<>();
 
     @BeforeEach
     void setup() {
@@ -57,9 +58,10 @@ class PatientServiceTest {
         em.flush();
         em.clear();
 
-        for (Visit.VisitBuilder visit : FakeData.getVisits(20)) {
-            Visit build = visit.hospital(hospital).patient(patients.get(0)).build();
-            visits.add(build);
+        List<Visit.VisitBuilder> visitBuilders = FakeData.getVisits(30);
+        int size = visitBuilders.size();
+        for (int i = 0; i < size; i++) {
+            Visit build = visitBuilders.get(i).hospital(hospital).patient(patients.get(i / VISITS_SIZE)).build();
             visitRepository.save(build);
         }
     }
@@ -72,7 +74,7 @@ class PatientServiceTest {
 
         assertAll(
                 () -> assertThat(response.getId()).isEqualTo(findId),
-                () -> assertThat(response.getVisits().size()).isEqualTo(visits.size())
+                () -> assertThat(response.getVisits().size()).isEqualTo(VISITS_SIZE)
         );
     }
 
