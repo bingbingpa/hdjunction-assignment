@@ -2,13 +2,15 @@ package com.hdjunction.domain.patient;
 
 import com.hdjunction.domain.code.Code;
 import com.hdjunction.domain.patient.dto.request.CreatePatientRequest;
+import com.hdjunction.domain.patient.dto.request.SearchPatientRequest;
 import com.hdjunction.domain.patient.dto.request.UpdatePatientRequest;
+import com.hdjunction.domain.patient.dto.response.PatientPageResponse;
 import com.hdjunction.domain.patient.dto.response.PatientResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -24,8 +26,8 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public List<PatientResponse> findAll() {
-        return null;
+    public Page<PatientPageResponse> search(SearchPatientRequest request, Pageable pageable) {
+        return patientRepository.search(request.getType(), request.getValue(), pageable);
     }
 
     public Long save(CreatePatientRequest dto) {

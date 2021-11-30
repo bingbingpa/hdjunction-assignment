@@ -11,4 +11,9 @@ public class SearchPatientRequest {
 
     private PatientSearchType type;
     private String value;
+
+    public SearchPatientRequest(PatientSearchType type, String value) {
+        this.type = type;
+        this.value = value;
+    }
 }

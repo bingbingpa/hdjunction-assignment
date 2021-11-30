@@ -23,7 +23,7 @@
     - created_date, modified_date
   - (옵션) 코드, 코드그룹 Entity 구현
   - JpaRepository 를 상속 받아서 PatientRepository, VisitRepository 생성
-- [ ] API
+- [X] API
   - 환자 등록
     - 환자등록번호는 **병원별로 중복되지 않도록 서버에서 생성**
       - 환자번호는 등록일 yyyy + leftPad(6 - 숫자.length ) 형태로 등록한다.
@@ -40,7 +40,7 @@
   - global Exception 처리
   - dto validation
     - 전화 번호, 생일
-- [ ] response
+- [X] response
   - 성별 코드명으로 보여주기
   - 날짜 yyyy-mm-dd 형태로 보여주기
   - 전화번호 xxx-xxxx-xxxx 형태로 보여주기
