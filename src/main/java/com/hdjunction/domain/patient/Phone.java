@@ -17,6 +17,10 @@ public class Phone {
     private String phone;
 
     public Phone(String phone) {
+        if (isNull(phone)) {
+            new Phone();
+            return;
+        }
         validation(phone);
         this.phone = phone;
     }
@@ -26,7 +30,7 @@ public class Phone {
     }
 
     public String getPhone() {
-        return parsePhoneNumber(phone);
+        return isNull(phone) ? "" : parsePhoneNumber(phone);
     }
 
     private String parsePhoneNumber(String phone) {
@@ -37,5 +41,9 @@ public class Phone {
         if (!pattern.matcher(phone).find()) {
             throw new IllegalArgumentException("올바르지 않은 전화번호입니다. ex) 01012341234");
         }
+    }
+
+    private boolean isNull(String phone) {
+        return phone == null;
     }
 }

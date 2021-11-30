@@ -10,12 +10,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreatePatientRequest {
 
+    @NotBlank
     private Long hospitalId;
+    @NotBlank
     private String name;
+    @NotBlank
     private String gender;
     private String birthDay;
     private String phone;

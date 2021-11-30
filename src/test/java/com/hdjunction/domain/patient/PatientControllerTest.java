@@ -130,7 +130,6 @@ class PatientControllerTest {
                 .name("유저")
                 .gender("M")
                 .birthDay("19991010")
-                .phone("01033456789")
                 .build();
 
         mockMvc.perform(put(API_PATIENT_PATH + "/{id}", patient.getId())

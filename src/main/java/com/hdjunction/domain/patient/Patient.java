@@ -96,10 +96,10 @@ public class Patient extends BaseTimeEntity {
     }
 
     public String getBirthday() {
-        return birthday != null ? birthday.getBirthDay() : "";
+        return birthday.getBirthDay();
     }
 
     public String getPhone() {
-        return phone != null ? phone.getPhone() : "";
+        return phone.getPhone();
     }
 }

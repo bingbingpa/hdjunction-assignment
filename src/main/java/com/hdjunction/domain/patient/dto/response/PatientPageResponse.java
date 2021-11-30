@@ -30,7 +30,7 @@ public class PatientPageResponse {
         this.registrationNo = registrationNo;
         this.gender = gender.getName();
         this.birthDay = birthDay.getBirthDay();
-        this.phone = phone!= null ? phone.getPhone() : "";
+        this.phone = phone.getPhone();
         this.receptionDate = receptionDate != null ? receptionDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
     }
 }

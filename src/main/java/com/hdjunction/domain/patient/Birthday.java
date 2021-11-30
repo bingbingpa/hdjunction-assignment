@@ -19,6 +19,10 @@ public class Birthday {
     private String birthDay;
 
     public Birthday(String birthDay) {
+        if (isNull(birthDay)) {
+            new Birthday();
+            return;
+        }
         validation(birthDay);
         this.birthDay = birthDay;
     }
@@ -28,7 +32,7 @@ public class Birthday {
     }
 
     public String getBirthDay() {
-        return parseBirthDay(birthDay);
+        return isNull(birthDay) ? "" : parseBirthDay(birthDay);
     }
 
     private String parseBirthDay(String birthDay) {
@@ -39,5 +43,9 @@ public class Birthday {
         if (!pattern.matcher(birthDay).find()) {
             throw new IllegalArgumentException("올바르지 않은 생년월입입니다. ex) 20200102");
         }
+    }
+
+    private boolean isNull(String birthDay) {
+        return birthDay == null;
     }
 }
