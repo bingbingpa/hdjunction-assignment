@@ -9,6 +9,7 @@ import com.hdjunction.domain.patient.dto.request.UpdatePatientRequest;
 import com.hdjunction.domain.visit.Visit;
 import com.hdjunction.domain.visit.VisitRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,7 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.hdjunction.domain.patient.PatientController.API_PATIENTS_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -35,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class PatientControllerTest {
 
-    private static final String API_PATIENT_PATH = "/api/patients";
     private final List<Patient> patients = new ArrayList<>();
     @Autowired
     private MockMvc mockMvc;
@@ -79,7 +80,7 @@ class PatientControllerTest {
     void findById() throws Exception {
         Patient patient = patients.get(0);
 
-        mockMvc.perform(get(API_PATIENT_PATH + "/{id}", patient.getId())
+        mockMvc.perform(get(API_PATIENTS_PATH + "/{id}", patient.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(("payload.name")).value(patient.getName()))
@@ -92,7 +93,7 @@ class PatientControllerTest {
         int page = 1;
         int size = 10;
 
-        mockMvc.perform(get(API_PATIENT_PATH)
+        mockMvc.perform(get(API_PATIENTS_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("type", PatientSearchType.BIRTHDAY.toString())
                         .param("value", "20200101")
@@ -116,11 +117,10 @@ class PatientControllerTest {
                 .phone("01099991234")
                 .build();
 
-        mockMvc.perform(post(API_PATIENT_PATH)
+        mockMvc.perform(post(API_PATIENTS_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createPatientRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath(("status")).value(HttpStatus.CREATED.value()));
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -130,13 +130,13 @@ class PatientControllerTest {
                 .name("유저")
                 .gender("M")
                 .birthDay("19991010")
+                .phone("01099991234")
                 .build();
 
-        mockMvc.perform(put(API_PATIENT_PATH + "/{id}", patient.getId())
+        mockMvc.perform(put(API_PATIENTS_PATH + "/{id}", patient.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatePatientRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath(("status")).value(HttpStatus.NO_CONTENT.value()));
+                .andExpect(status().isNoContent());
 
         Patient saved = patientRepository.findById(patient.getId()).orElseThrow(NotFoundPatientException::new);
 
@@ -151,10 +151,54 @@ class PatientControllerTest {
     void deletePatient() throws Exception {
         Long id = patients.get(0).getId();
 
-        mockMvc.perform(delete(API_PATIENT_PATH + "/{id}", id))
-                .andExpect(status().isOk());
+        mockMvc.perform(delete(API_PATIENTS_PATH + "/{id}", id))
+                .andExpect(status().isNoContent());
 
         assertThatThrownBy(() -> patientService.findById(id))
                 .isInstanceOf(NotFoundPatientException.class);
+    }
+
+    @Test
+    @DisplayName("request dto 객체의 @Valid 동작 확인")
+    void dto_validation() throws Exception {
+        CreatePatientRequest createPatientRequest = CreatePatientRequest.builder()
+                .hospitalId(hospital.getId())
+                .build();
+
+        mockMvc.perform(post(API_PATIENTS_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createPatientRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath(("status")).value(HttpStatus.BAD_REQUEST.value()))
+                .andExpect(jsonPath(("errorMessage")).exists());
+    }
+
+    @Test
+    @DisplayName("request dto 객체의 @Pattern 동작 확인")
+    void dto_validation_pattern() throws Exception {
+        CreatePatientRequest createPatientRequest = CreatePatientRequest.builder()
+                .hospitalId(hospital.getId())
+                .name("테스트")
+                .gender("F")
+                .birthDay("122223004049fjvn")
+                .phone("01099991234")
+                .build();
+
+        mockMvc.perform(post(API_PATIENTS_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createPatientRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath(("status")).value(HttpStatus.BAD_REQUEST.value()))
+                .andExpect(jsonPath(("errorMessage")).exists());
+    }
+
+    @Test
+    @DisplayName("없는 아이디를 조회할 경우")
+    void not_found_patient() throws Exception {
+        mockMvc.perform(get(API_PATIENTS_PATH + "/{id}", 123456)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath(("status")).value(HttpStatus.BAD_REQUEST.value()))
+                .andExpect(jsonPath(("errorMessage")).exists());
     }
 }

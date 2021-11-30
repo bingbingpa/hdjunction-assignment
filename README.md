@@ -36,7 +36,7 @@
     - pageNo 는 1부터 시작
     - 총건수, 페이지시작번호 - 페이지마지막번호, 페이지 정보를 보여줘야한다.
 - [ ] spring restdocs 를 이용한 문서화
-- [ ] validation
+- [X] validation
   - global Exception 처리
   - dto validation
     - 전화 번호, 생일

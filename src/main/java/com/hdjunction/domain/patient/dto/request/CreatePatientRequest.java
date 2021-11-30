@@ -11,18 +11,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreatePatientRequest {
 
-    @NotBlank
     private Long hospitalId;
     @NotBlank
     private String name;
     @NotBlank
     private String gender;
+    @Pattern(regexp=Birthday.REGEX_BIRTHDAY)
     private String birthDay;
+    @Pattern(regexp=Phone.REGEX_PHONE)
     private String phone;
 
     @Builder

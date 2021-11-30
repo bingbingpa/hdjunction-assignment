@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Birthday {
 
-    private static final Pattern pattern = Pattern.compile("^(19[0-9][0-9]|20\\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$");
+    public static final String REGEX_BIRTHDAY = "^(19[0-9][0-9]|20\\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$";
+    private static final Pattern pattern = Pattern.compile(REGEX_BIRTHDAY);
 
     @Column
     private String birthDay;

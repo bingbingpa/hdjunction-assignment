@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Phone {
 
-    private static final Pattern pattern = Pattern.compile("^01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}$");
+    public static final String REGEX_PHONE = "^01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}$";
+    private static final Pattern pattern = Pattern.compile(REGEX_PHONE);
 
     @Column
     private String phone;
