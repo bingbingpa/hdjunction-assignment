@@ -4,9 +4,7 @@ import com.hdjunction.domain.baseentity.BaseTimeEntity;
 import com.hdjunction.domain.code.Code;
 import com.hdjunction.domain.hospital.Hospital;
 import com.hdjunction.domain.patient.Patient;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -29,4 +27,11 @@ public class Visit extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Code visitCode;
+
+    @Builder
+    public Visit(Hospital hospital, Patient patient, Code visitCode) {
+        this.hospital = hospital;
+        this.patient = patient;
+        this.visitCode = visitCode;
+    }
 }

@@ -1,5 +1,10 @@
 package com.hdjunction.domain.code;
 
+import lombok.Getter;
+
+import java.util.Arrays;
+
+@Getter
 public enum Code {
     MALE("M", "남"),
     FEMALE("F", "여"),
@@ -16,11 +21,20 @@ public enum Code {
 
     NONE("NONE", "일치하는 코드 없음");
 
+    private static final Code[] CACHED_CODES = Code.values();
+
     private final String code;
     private final String name;
 
     Code(String code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static Code findByCode(String code) {
+        return Arrays.stream(CACHED_CODES)
+                .filter(c -> c.code.equals(code))
+                .findAny()
+                .orElse(NONE);
     }
 }

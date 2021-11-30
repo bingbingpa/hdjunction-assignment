@@ -28,7 +28,8 @@ public class Hospital extends BaseTimeEntity {
     private String directorName;
 
     @Builder
-    public Hospital(String name, String ykiho, String directorName) {
+    public Hospital(Long id, String name, String ykiho, String directorName) {
+        this.id = id;
         this.name = name;
         this.ykiho = ykiho;
         this.directorName = directorName;
