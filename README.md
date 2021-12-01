@@ -7,14 +7,32 @@
 - springBoot 2.6.0
   - spring web
   - spring data jpa
+  - spring validation
   - spring restdocs
   - queryDsl
 - db: h2 memory
 - test: JUnit5
 
 ### 프로젝트 구조
+~~~
+com.hdjunction
+└── domain
+│    └── baseentity 공통 entity
+│    └── code 코드 그룹 및 코드 enum
+│    └── hospital
+│    └── patient
+│    │    └── dto
+│    │    │    └── request
+│    │    │    └── response
+│    └── visit
+└── global
+│    └── config  config, properties 관련 설정
+│    └── exception 전역 에러 처리 advice
+│    └── response api result 공통 dto
+~~~
 
 ### API 문서
+- [restdocs 문서](./src/main/resources/static/docs/api-document.pdf)
 
 ### 요구사항 정리
 
@@ -35,7 +53,7 @@
     - 이름, 환자등록번호, 생년월일로 동적 조회
     - pageNo 는 1부터 시작
     - 총건수, 페이지시작번호 - 페이지마지막번호, 페이지 정보를 보여줘야한다.
-- [ ] spring restdocs 를 이용한 문서화
+- [X] spring restdocs 를 이용한 문서화
 - [X] validation
   - global Exception 처리
   - dto validation

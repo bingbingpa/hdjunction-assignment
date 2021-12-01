@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class dateOfBirthTest {
+class DateOfBirthTest {
 
     @Test
     @DisplayName("yyyymmdd 형식을 yyyy-mm-dd 형태로 변환하여 생성한다.")
